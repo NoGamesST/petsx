@@ -1,4 +1,3 @@
---credits to https://raw.githubusercontent.com/Henrymistert123/ExploitCompilation/main/LUAGptSetup.lua
 --[[
 $$\   $$\ $$\ 
 $$ |  $$ |\__|
@@ -349,7 +348,13 @@ function get_my_banks()
     return Invoke("Get My Banks")
 end
 function get_bank_data(bankUID)
-    return Invoke("Get Bank", bankUID).Storage
+    frtable = {}
+    data = Invoke("Get Bank", bankUID).Storage
+    frtable['Diamonds'] = data.Diamonds
+    for i,v in pairs(data.Pets) do
+        table.insert(frtable, i)
+    end
+    return frtable
 end
 function invite_to_bank(bankUID, userid)
     Invoke("Invite To Bank", bankUID, userid)
@@ -408,6 +413,11 @@ function teleport_to_booth(owner_user_id)
     end
     return nil
 end
+function teleport_to_position(pos)
+    hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+    plrpos = CFrame.new(pos)
+    hrp.CFrame = plrpos
+end
 function serverhop(min, max)
 	local function getServerIDs(minPlayers, maxPlayers)
 	    local apiUrl = "https://games.roblox.com/v1/games/[GAME_ID]/servers/Public?sortOrder=Asc&limit=100"
@@ -452,3 +462,4 @@ function serverhop(min, max)
 	local servers = getServerIDs(min, max)
 	ServerHop(servers)
 end
+--credits to henry
